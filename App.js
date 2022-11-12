@@ -8,6 +8,7 @@ import {Home} from './src/screens/Home';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Chatbot} from './src/screens/Chatbot';
 import {VoiceConversation} from './src/screens/VoiceConversation';
+import { Audio } from './src/screens/Audio';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +34,11 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+      {/* <Stack.Screen
+          name="Audio"
+          component={Audio}
+          options={{title: 'Audio'}}
+        /> */}
         <Stack.Screen
           name="Home"
           component={Home}

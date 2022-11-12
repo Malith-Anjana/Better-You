@@ -23,6 +23,8 @@ target 'BetterYou' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'RNAudioRecord', :path => '../node_modules/react-native-audio-record'
+
   target 'BetterYouTests' do
     inherit! :complete
     # Pods for testing

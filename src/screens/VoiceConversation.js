@@ -18,6 +18,10 @@ import {IMAGE} from '../assets/images/chatbotImage';
 import Tts from 'react-native-tts';
 import Lottie from 'lottie-react-native';
 import {LogBox} from 'react-native';
+import { predict } from '../api';
+
+//for audio record
+import AudioRecord from 'react-native-audio-record';
 
 export function VoiceConversation() {
   LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification by message
@@ -53,9 +57,13 @@ export function VoiceConversation() {
   const onSpeechError = e => {
     setError(JSON.stringify(e.error));
   };
-  const onSpeechResults = e => {
+  const onSpeechResults = async e => {
     console.log(e.value[0]);
     setResults(e.value[0]);
+
+       //send for prediction
+      const prediction = await predict({"start": true, "text":e.value[0], "end":false});
+      console.log(prediction.data); 
     getReply(e.value[0]);
   };
   const onSpeechPartialResults = e => {
@@ -122,7 +130,9 @@ export function VoiceConversation() {
   };
   const stopSpeechRecognizing = async () => {
     try {
+      
       await Voice.stop();
+      stops();
       setStarted(false);
       setResults([]);
       setPartialResults([]);
@@ -131,6 +141,70 @@ export function VoiceConversation() {
       console.error(e);
     }
   };
+
+
+
+
+
+
+
+  //For the audio prediction part
+  const [audiofile, setAudiofile] = useState("");
+    const [recording, setRecording] = useState(false);
+
+    useEffect(() => {
+      
+        const options = {
+            sampleRate: 16000,  // default 44100
+            channels: 1,        // 1 or 2, default 1
+            bitsPerSample: 16,  // 8 or 16, default 16
+            audioSource: 6,     // android only (see below)
+            wavFile: 'test.wav' // default 'audio.wav'
+          };
+    
+        AudioRecord.init(options);
+    }, [])
+
+
+   const starts = () =>{
+        console.log("start record");
+        setAudiofile("");
+        setRecording(true);
+        AudioRecord.start();
+    }
+
+   const stops = async () =>{
+        if (!recording) return;
+       
+
+        let audio = await AudioRecord.stop();
+        setAudiofile(audio);
+        console.log("Audio File",audio);
+        setRecording(true);
+        console.log('stop record');
+
+        await getResponse(audio);
+    }
+
+    const getResponse = async(audio) => {
+        const file = {
+            uri : 'file://'+ audio,
+            type : 'audio/wav',
+            name : 'test.wav'
+          }
+          let formData = new FormData()
+          formData.append('audio', file) // filePath -> your param for the file
+          console.log("Form Data", formData);
+          await fetch("http://127.0.0.1:5000/predict", {
+            method: "POST",
+            body:formData
+          }).then(response => response.json())
+          .then(data => {
+              console.log(data);
+          })
+          .catch(err => console.error(err));
+    }
+  
   return (
     <View style={styles.container}>
     <ImageBackground style={styles.image} 
@@ -178,11 +252,21 @@ export function VoiceConversation() {
           </View>
         </TouchableOpacity>
       </View>
-      <Button color={'red'} onPress={stopSpeechRecognizing} title="Stop"/>
+      <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+      <Button style={{width:100}} color={'red'} onPress={stopSpeechRecognizing} title="Stop"/>
+      <Button style={styles.button} color={'green'} onPress={starts} title="Review"/>
+
+      </View>
       </ImageBackground>
     </View>
   );
 }
+
+
+
+
+
+
 
 const styles = StyleSheet.create({
   checkAnimation: {
@@ -223,5 +307,11 @@ const styles = StyleSheet.create({
     flex:1,
     justifyContent:'center',
     padding: 20,
+  },
+  button: {
+    flex:1,
+    width: 80,
+    height: 20,
+    borderRadius:"50%"
   }
 });
