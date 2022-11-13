@@ -1,5 +1,5 @@
 export const COLOR = {
-    primary: '#12cdc2',
+    primary: '#014f8f',
     onPrimary: '#fff',
     surface: '#fff',
     onSurface: '#000',

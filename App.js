@@ -34,11 +34,6 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-      {/* <Stack.Screen
-          name="Audio"
-          component={Audio}
-          options={{title: 'Audio'}}
-        /> */}
         <Stack.Screen
           name="Home"
           component={Home}
@@ -53,6 +48,11 @@ const App = () => {
           name="VoiceConversation"
           component={VoiceConversation}
           options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Audio"
+          component={Audio}
+          options={{title: 'Audio'}}
         />
         <Stack.Screen
           name="Onboard"
