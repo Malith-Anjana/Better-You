@@ -198,8 +198,14 @@ export function VoiceConversation() {
         </TouchableOpacity>
       </View>
       <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-      <Button style={{width:100}} color={'red'} onPress={stopSpeechRecognizing} title="Stop"/>
-      <Button style={styles.button} color={'green'} onPress={getPreditction} title="Review"/>
+      <TouchableOpacity onPress={()=> stopSpeechRecognizing()}>
+          <MaterialCommunityIcons
+                name="arrow-right-bold-circle"
+                color={COLOR.white}
+                size={50}
+              /> 
+              </TouchableOpacity>
+        <Button style={styles.button} color={'green'} onPress={getPreditction} title="Review"/>
 
       </View>
       </ImageBackground>

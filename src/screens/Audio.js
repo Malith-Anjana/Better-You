@@ -6,6 +6,7 @@ import { Buffer } from 'buffer';
 import { COLOR } from '../themes';
 import Lottie from 'lottie-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // create a component
 export const Audio = () => {
@@ -83,16 +84,9 @@ export const Audio = () => {
     return (
         <View style={{ flex: 1 }}>
         <View style={styles.topBar}>
-          {/* <View style={{ flexDirection: 'row' }}>
-            <Image style={[styles.iconImg, { marginRight: 50 }]} source={{uri: "https://img.icons8.com/color/48/000000/video-call.png"}}/>
-            <Text style={styles.subText}>WHATSAPP CALL</Text>
-          </View> */}
           <Text style={styles.title}>{"Tell Your Story"}</Text>
           <Text style={styles.subText}>we record your audio and video</Text>
         </View>
-        {/* <TouchableOpacity style={[styles.btnStopCall, styles.shadow]} onPress={starts}>
-          <Image style={styles.iconImg} source={{uri: "https://img.icons8.com/windows/32/000000/phone.png"}}/>
-        </TouchableOpacity> */}
         <Lottie
                 style={styles.checkAnimation}
                 source={require('../assets/lottie/audio_animation.json')}
@@ -103,14 +97,27 @@ export const Audio = () => {
               />
         <View style={styles.bottomBar}>
           <TouchableOpacity style={[styles.btnAction, styles.shadow]} onPress={stops}>
-            <Image style={styles.iconImg} source={{uri: "https://img.icons8.com/flat-round/200/000000/stop.png"}}/>
+          <MaterialCommunityIcons
+                name="stop-circle"
+                color={COLOR.white}
+                size={50}
+              />
           </TouchableOpacity>
-          {!loaded?<TouchableOpacity style={[styles.btnAction, styles.shadow]} onPress={starts}>            
-          <Image style={styles.iconImg} source={{uri: "https://img.icons8.com/color-glass/200/null/play.png"}}/>
-          </TouchableOpacity>: null}
+          {!loaded?
+          <TouchableOpacity style={[styles.btnAction, styles.shadow]} onPress={starts}>
+          <MaterialCommunityIcons
+                name="arrow-right-drop-circle"
+                color={COLOR.white}
+                size={50}
+              /> 
+            </TouchableOpacity>: null}
           <TouchableOpacity style={[styles.btnAction, styles.shadow]} onPress={()=> getResponse()}>
-            <Image style={styles.iconImg} source={{uri: "https://img.icons8.com/fluency/200/null/popular-topic.png"}}/>
-          </TouchableOpacity>
+          <MaterialCommunityIcons
+                name="arrow-right-bold-circle"
+                color={COLOR.white}
+                size={50}
+              /> 
+              </TouchableOpacity>
         </View>
       </View>
     );
@@ -126,9 +133,9 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   checkAnimation: {
-    width: '65%',
-    height: '65%',
-    marginLeft:15,
+    flex:5,
+    height:'90%',
+    marginLeft:-15,
     marginTop: 10,
   },
   image: {
@@ -185,16 +192,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius:32,
-    backgroundColor: "#fff",
   },
   shadow:{
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowOpacity: 0.34,
-    shadowRadius: 6.27,
-    elevation: 10,
   }
 });
