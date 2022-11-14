@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Chatbot} from './src/screens/Chatbot';
 import {VoiceConversation} from './src/screens/VoiceConversation';
 import { Audio } from './src/screens/Audio';
+import VideoTest from './src/screens/VideoTest';
 
 const Stack = createNativeStackNavigator();
 
@@ -34,6 +35,11 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+      {/* <Stack.Screen
+          name="Video"
+          component={VideoTest}
+          options={{title: 'Video'}}
+        /> */}
         <Stack.Screen
           name="Home"
           component={Home}

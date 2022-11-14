@@ -18,7 +18,7 @@ import {IMAGE} from '../assets/images/chatbotImage';
 import Tts from 'react-native-tts';
 import Lottie from 'lottie-react-native';
 import {LogBox} from 'react-native';
-import { predict } from '../api';
+import { friendSuggest, predict } from '../api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -143,11 +143,44 @@ export function VoiceConversation() {
   
   //send for prediction
   const getPreditction = async ()=>{
-     const prediction = await predict({"start": true, "text":request, "end":false});
-     let audioResult = await AsyncStorage.getItem('audioPredict');  
-      let result = JSON.parse(audioResult); 
-     console.log("Text Prediction",prediction.data); 
-     console.log("Voice Prediction",result); 
+    const prediction = await predict({"start": true, "text":request, "end":false});
+    AsyncStorage.setItem('textPredict',JSON.stringify(prediction.data));
+    await review()
+  }
+
+  const sortEmotions = (d) => {
+      const emoList = {
+        "happy":d.happy,
+        "sad":d.sad,
+        "angry": d.angry,
+        "fearful":d.fearful,
+        "calm": d.calm
+      }
+    return Object.values(emoList);
+  }
+
+  const review = async () => {
+    
+    let audioResult = await AsyncStorage.getItem('textPredict');  
+    let aResult = JSON.parse(audioResult); 
+ 
+    let textResult = await AsyncStorage.getItem('audioPredict');  
+    let tResult = JSON.parse(textResult);
+
+    const aArray = sortEmotions(aResult);
+    const tArray = sortEmotions(tResult);
+
+    console.log(aArray, tArray)
+    // Happy", "Sad", "Angry", "Calm", "Fearful",
+    console.log(aResult, tResult);
+    const bd = {
+      "model_1": aArray,
+      "model_2": [0.088, 0.432, 0.345, 0.934, 0.777],
+      "model_3": tArray,
+      "weight": [72.73, 82.28, 92.68]
+      }
+    const res = await friendSuggest(bd)
+    console.log(res.data);
   }
   
   return (
@@ -200,12 +233,18 @@ export function VoiceConversation() {
       <View style={{flexDirection:'row', justifyContent:'space-between'}}>
       <TouchableOpacity onPress={()=> stopSpeechRecognizing()}>
           <MaterialCommunityIcons
-                name="arrow-right-bold-circle"
-                color={COLOR.white}
-                size={50}
+                name="stop-circle"
+                color='red'
+                size={55}
               /> 
               </TouchableOpacity>
-        <Button style={styles.button} color={'green'} onPress={getPreditction} title="Review"/>
+        <TouchableOpacity onPress={()=>getPreditction()}>
+        <MaterialCommunityIcons
+                name="arrow-right-bold-circle"
+                color='green'
+                size={55}
+              /> 
+        </TouchableOpacity>
 
       </View>
       </ImageBackground>
