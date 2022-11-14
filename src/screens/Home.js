@@ -18,7 +18,7 @@ export const Home = () => {
         {id:1, title: "Chatbot",  color:"#00BFFF", members:8,  image:"https://img.icons8.com/external-prettycons-flat-prettycons/200/null/external-conversation-multimedia-prettycons-flat-prettycons.png", name:"Chatbot"},
         {id:1, title: "Record Audio",     color:"#87CEEB", members:6,  image:"https://img.icons8.com/bubbles/200/null/voice-memos.png", name:"Audio" },
         {id:2, title: "Conversation",     color:"#4682B4", members:12, image:"https://img.icons8.com/external-smashingstocks-flat-smashing-stocks/200/null/external-chatbot-tech-support-mentoring-and-training-smashingstocks-flat-smashing-stocks.png", name:'VoiceConversation'} ,
-        {id:3, title: "Activities",   color:"#20B2AA", members:5,  image:"https://img.icons8.com/external-flaticons-flat-flat-icons/200/null/external-activities-vacation-planning-guys-trip-flaticons-flat-flat-icons.png"} ,
+        {id:3, title: "Activities",   color:"#20B2AA", members:5,  image:"https://img.icons8.com/external-flaticons-flat-flat-icons/200/null/external-activities-vacation-planning-guys-trip-flaticons-flat-flat-icons.png", name:'ExerciseHome'} ,
         // {id:4, title: "Friends",  color:"#FF69B4", members:6,  image:"https://img.icons8.com/color/70/000000/groups.png"} ,
         // {id:5, title: "School",   color:"#00BFFF", members:7,  image:"https://img.icons8.com/color/70/000000/classroom.png"} ,
         // {id:6, title: "Things",   color:"#00FFFF", members:8,  image:"https://img.icons8.com/dusk/70/000000/checklist.png"} ,

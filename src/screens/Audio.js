@@ -7,6 +7,7 @@ import { COLOR } from '../themes';
 import Lottie from 'lottie-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNavigation } from '@react-navigation/core';
 
 // create a component
 export const Audio = () => {
@@ -14,7 +15,7 @@ export const Audio = () => {
     const [recording, setRecording] = useState(false);
     const [loaded, setLoaded] = useState(false);
     const [paused, setPaused] = useState(true);
-
+    const navigation = useNavigation()
     useEffect(() => {
       
         const options = {
@@ -75,7 +76,8 @@ export const Audio = () => {
 
             let audioResult = await AsyncStorage.getItem('audioPredict');  
             let result = JSON.parse(audioResult);  
-            data?alert("First step is completed"): alert("Some thing went wrong, Try Again")
+            data?navigation.navigate('VoiceConversation')
+            : alert("Some thing went wrong, Try Again")
 
               console.log(result);
           })

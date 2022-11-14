@@ -9,7 +9,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Chatbot} from './src/screens/Chatbot';
 import {VoiceConversation} from './src/screens/VoiceConversation';
 import { Audio } from './src/screens/Audio';
-import VideoTest from './src/screens/VideoTest';
+import ExerciseHomeScreen from './src/screens/ExerciseHomeScreen';
+import ExerciseDetailsScreen from './src/screens/ExerciseDetailsScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -49,6 +50,16 @@ const App = () => {
           name="Chatbot"
           component={Chatbot}
           options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ExerciseHome"
+          component={ExerciseHomeScreen}
+          options={{title: 'Activity Recommendation'}}
+        />
+        <Stack.Screen
+          name="ExerciseDetails"
+          component={ExerciseDetailsScreen}
+          options={{title: 'Activity Details'}}
         />
         <Stack.Screen
           name="VoiceConversation"

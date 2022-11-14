@@ -20,12 +20,14 @@ import Lottie from 'lottie-react-native';
 import {LogBox} from 'react-native';
 import { friendSuggest, predict } from '../api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/core';
 
 
 export function VoiceConversation() {
   LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification by message
   LogBox.ignoreAllLogs(); //Ignore all log notifications
   Tts.setDefaultRate(0.4);
+  const navigation = useNavigation();
 
   const [pitch, setPitch] = useState('');
   const [error, setError] = useState('');
@@ -146,9 +148,11 @@ export function VoiceConversation() {
     const prediction = await predict({"start": true, "text":request, "end":false});
     AsyncStorage.setItem('textPredict',JSON.stringify(prediction.data));
     await review()
+    
+
   }
 
-  const sortEmotions = (d) => {
+  const sortEmotions = async (d) => {
       const emoList = {
         "happy":d.happy,
         "sad":d.sad,
@@ -167,20 +171,22 @@ export function VoiceConversation() {
     let textResult = await AsyncStorage.getItem('audioPredict');  
     let tResult = JSON.parse(textResult);
 
-    const aArray = sortEmotions(aResult);
-    const tArray = sortEmotions(tResult);
+    const aArray = await sortEmotions(aResult);
+    const tArray = await sortEmotions(tResult);
 
     console.log(aArray, tArray)
     // Happy", "Sad", "Angry", "Calm", "Fearful",
     console.log(aResult, tResult);
     const bd = {
       "model_1": aArray,
-      "model_2": [0.088, 0.432, 0.345, 0.934, 0.777],
+      "model_2": [0.088,0.432,0.345,0.934,0.777],
       "model_3": tArray,
-      "weight": [72.73, 82.28, 92.68]
+      "weight": [72.73,82.28,92.68]
       }
     const res = await friendSuggest(bd)
+    AsyncStorage.setItem('activityPredict',JSON.stringify(res.data));
     console.log(res.data);
+    navigation.navigate('Home')
   }
   
   return (
